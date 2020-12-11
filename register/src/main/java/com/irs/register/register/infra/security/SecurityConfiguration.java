@@ -14,7 +14,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.irs.register.register.infra.db.user.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.filter.TokenAuthenticationFilter;
+import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.service.AuthenticationService;
+import com.irs.register.register.infra.security.service.TokenService;
 
 @EnableWebSecurity
 @Configuration
@@ -34,6 +37,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
 	}
+	
+    //Configurations for authentication
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    	auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
+    }
 
     //Configuration for authorization
     @Override
@@ -41,14 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
         	.antMatchers(HttpMethod.POST, "/auth").permitAll()
         	.anyRequest().authenticated()
-        	.and().csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        	.and().csrf().disable()
+        	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         	.and().addFilterBefore(new TokenAuthenticationFilter(tokenService, repository), UsernamePasswordAuthenticationFilter.class);
-    }
-
-    //Configurations for authentication
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    	auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     //Configuration for static resources

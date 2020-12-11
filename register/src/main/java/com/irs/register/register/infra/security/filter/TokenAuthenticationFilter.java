@@ -1,4 +1,4 @@
-package com.irs.register.register.infra.security;
+package com.irs.register.register.infra.security.filter;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -12,8 +12,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.irs.register.register.entity.User;
-import com.irs.register.register.infra.db.user.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.entity.User;
+import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.service.TokenService;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	

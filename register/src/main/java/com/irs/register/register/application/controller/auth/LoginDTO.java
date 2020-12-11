@@ -1,4 +1,4 @@
-package com.irs.register.register.dto.login;
+package com.irs.register.register.application.controller.auth;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.irs.register.register.infra.security;
+package com.irs.register.register.infra.security.service;
 
 import java.util.Optional;
 
@@ -8,8 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.irs.register.register.entity.User;
-import com.irs.register.register.infra.db.user.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.entity.User;
+import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
 
 @Service
 public class AuthenticationService implements UserDetailsService{

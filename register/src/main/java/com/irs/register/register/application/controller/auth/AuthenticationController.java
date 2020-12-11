@@ -1,4 +1,4 @@
-package com.irs.register.register.application.controller;
+package com.irs.register.register.application.controller.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.irs.register.register.dto.login.LoginDTO;
-import com.irs.register.register.dto.login.TokenDTO;
-import com.irs.register.register.infra.security.TokenService;
+import com.irs.register.register.infra.security.service.TokenService;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class AuthenticationController {
 	
 	@Autowired

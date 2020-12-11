@@ -1,4 +1,4 @@
-package com.irs.register.register.infra.security;
+package com.irs.register.register.infra.security.service;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.irs.register.register.entity.User;
+import com.irs.register.register.infra.security.entity.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

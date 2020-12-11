@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.irs.register.register.infra.security.filter.TokenAuthenticationFilter;
-import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.repository.UserRepositoryPort;
 import com.irs.register.register.infra.security.service.AuthenticationService;
 import com.irs.register.register.infra.security.service.TokenService;
 
@@ -30,7 +30,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private TokenService tokenService;
 	
 	@Autowired
-	private UserRepositoryAdapter repository;
+	private UserRepositoryPort repository;
 	
 	@Override
 	@Bean

@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.irs.register.register.infra.security.entity.User;
-import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.repository.UserRepositoryPort;
 
 @Service
 public class AuthenticationService implements UserDetailsService{
 	
 	@Autowired
-	private UserRepositoryAdapter repository;
+	private UserRepositoryPort repository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

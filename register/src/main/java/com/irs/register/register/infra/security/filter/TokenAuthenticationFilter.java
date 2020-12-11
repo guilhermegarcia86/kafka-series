@@ -14,14 +14,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.irs.register.register.infra.security.entity.User;
 import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
+import com.irs.register.register.infra.security.repository.UserRepositoryPort;
 import com.irs.register.register.infra.security.service.TokenService;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 	
 	private final TokenService tokenService;
-	private final UserRepositoryAdapter repository;
+	private final UserRepositoryPort repository;
 	
-	public TokenAuthenticationFilter(TokenService tokenService, UserRepositoryAdapter repository) {
+	public TokenAuthenticationFilter(TokenService tokenService, UserRepositoryPort repository) {
 		this.tokenService = tokenService;
 		this.repository = repository;
 	}

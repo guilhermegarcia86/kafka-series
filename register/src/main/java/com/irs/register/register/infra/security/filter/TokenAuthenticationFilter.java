@@ -13,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.irs.register.register.infra.security.entity.User;
-import com.irs.register.register.infra.security.repository.UserRepositoryAdapter;
 import com.irs.register.register.infra.security.repository.UserRepositoryPort;
 import com.irs.register.register.infra.security.service.TokenService;
 

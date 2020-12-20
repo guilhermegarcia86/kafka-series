@@ -1,0 +1,11 @@
+{
+     "type": "record",
+     "namespace": "com.irs.register.avro.taxpayer",
+     "name": "TaxPayer",
+     "version": "1",
+     "fields": [
+       { "name": "name", "type": "string", "doc": "Name of TaxPayer" },
+       { "name": "document", "type": "string", "doc": "Document of TaxPayer" },
+       { "name": "situation", "type": "boolean", "default": false, "doc": "Legal situation of TaxPayer" }
+     ]
+}

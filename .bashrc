@@ -1,0 +1,1 @@
+export GOBIN=$GOPATH/bin

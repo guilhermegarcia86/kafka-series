@@ -17,9 +17,8 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<avro.version>1.8.2</avro.version>
-		<kafka.version>0.11.0.1</kafka.version>
-		<confluent.version>3.3.1</confluent.version>
+		<!-- <avro.version>1.8.2</avro.version> <kafka.version>0.11.0.1</kafka.version> 
+			<confluent.version>3.3.1</confluent.version> -->
 	</properties>
 
 	<dependencies>
@@ -77,7 +76,7 @@
 		<dependency>
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
-			<version>${avro.version}</version>
+			<version>1.10.1</version>
 		</dependency>
 
 		<!--dependencies needed for the kafka part -->
@@ -85,18 +84,38 @@
 		<dependency>
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka-clients</artifactId>
-			<version>${kafka.version}</version>
+			<!-- <version>${kafka.version}</version> -->
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/io.confluent/kafka-avro-serializer -->
 		<dependency>
 			<groupId>io.confluent</groupId>
 			<artifactId>kafka-avro-serializer</artifactId>
-			<version>${confluent.version}</version>
+			<version>5.3.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+			<!-- <version>${kafka.version}</version> -->
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 

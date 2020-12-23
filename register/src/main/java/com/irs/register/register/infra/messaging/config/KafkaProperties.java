@@ -1,4 +1,4 @@
-package com.irs.register.register.infra.messaging;
+package com.irs.register.register.infra.messaging.config;
 
 import java.util.List;
 

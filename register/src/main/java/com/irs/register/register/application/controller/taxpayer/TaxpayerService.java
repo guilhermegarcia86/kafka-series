@@ -11,10 +11,10 @@ import com.irs.register.avro.taxpayer.TaxPayer;
 import com.irs.register.register.infra.messaging.MessagingPort;
 import com.irs.register.register.shared.dto.CommonDTO;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Log4j
+@Slf4j
 public class TaxpayerService implements MessagingPort<TaxPayer> {
 
 	@Autowired
@@ -23,7 +23,7 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 
 	@Override
 	public String topic() {
-		return "taxpayer";
+		return "taxpayer-avro";
 	}
 		
 	@Override

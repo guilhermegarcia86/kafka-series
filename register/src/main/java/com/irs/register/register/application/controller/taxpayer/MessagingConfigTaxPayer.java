@@ -42,5 +42,4 @@ public class MessagingConfigTaxPayer implements MessagingConfigPort<TaxPayer> {
 		
 	}
 
-
 }

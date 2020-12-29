@@ -11,11 +11,11 @@ import lombok.Data;
 @Data
 public class TaxpayerDTO implements CommonDTO{
 	
-	@NotBlank
-	@Min(value = 3)
+//	@NotBlank
+//	@Min(value = 3)
 	private String name;
 	
-	@Document
+//	@Document
 	private String document;
 
 	@Override

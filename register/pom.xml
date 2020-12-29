@@ -17,8 +17,6 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<!-- <avro.version>1.8.2</avro.version> <kafka.version>0.11.0.1</kafka.version> 
-			<confluent.version>3.3.1</confluent.version> -->
 	</properties>
 
 	<dependencies>
@@ -103,13 +101,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
-		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
 		</dependency>
 
 		<dependency>

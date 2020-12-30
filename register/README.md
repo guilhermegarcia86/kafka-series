@@ -1,6 +1,6 @@
-# Register (under construction)
+# Register
 
-That app has the responsability of register data from users.
+That app has the responsability of send data from users.
 
 ## Build
 ```bash

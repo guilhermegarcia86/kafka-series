@@ -43,7 +43,7 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 		
 		producer.send(this.createProducerRecord(taxPayer), (rm, ex) -> {
 			if (ex == null) {
-				log.info("Data sent with sucess!!!");
+				log.info("Data sent with success!!!");
 			} else {
 				log.error("Fail to send message", ex);
 			}

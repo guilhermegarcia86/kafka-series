@@ -5,8 +5,6 @@ import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -45,18 +43,19 @@ public class KafkaConsumerService implements Consumer<TaxPayer> {
 
 			try {
 
-				ConsumerRecords<String, TaxPayer> records = kafkaConsumer.poll(Duration.ofMillis(1000));
+				kafkaConsumer.poll(Duration.ofMillis(1000)).forEach(record -> {
 
-				for (ConsumerRecord<String, TaxPayer> record : records) {
-					
 					log.info("Recebendo TaxPayer");
-					
+
 					TaxPayer taxpayer = record.value();
 
 					Person person = Person.builder().email(taxpayer.getEmail()).name(taxpayer.getName()).build();
-					
+
+					log.info(person.toString());
+
 					email.sendMessage(person);
-				}
+
+				});
 
 				kafkaConsumer.commitSync();
 

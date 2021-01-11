@@ -51,8 +51,6 @@ public class KafkaConsumerService implements Consumer<TaxPayer> {
 
 					Person person = Person.builder().email(taxpayer.getEmail()).name(taxpayer.getName()).build();
 
-					log.info(person.toString());
-
 					email.sendMessage(person);
 
 				});

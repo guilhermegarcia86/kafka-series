@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.irs.register.register.infra.security.filter.TokenAuthenticationFilter;
@@ -33,12 +31,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	private UserRepositoryPort repository;
-	
-	@Autowired
-	private AccessDeniedHandler accessDeniedHandler;
-	
-	@Autowired
-    private AuthenticationEntryPoint authenticationEntryPoint;
 	
 	@Override
 	@Bean
@@ -60,10 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         	.anyRequest().authenticated()
         	.and().csrf().disable()
         	.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        	.and().addFilterBefore(new TokenAuthenticationFilter(tokenService, repository), UsernamePasswordAuthenticationFilter.class)
-        	.exceptionHandling()
-            	.accessDeniedHandler(accessDeniedHandler)
-            	.authenticationEntryPoint(authenticationEntryPoint);
+        	.and().addFilterBefore(new TokenAuthenticationFilter(tokenService, repository), UsernamePasswordAuthenticationFilter.class);
     }
 
     //Configuration for static resources

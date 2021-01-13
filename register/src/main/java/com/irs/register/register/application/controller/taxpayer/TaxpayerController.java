@@ -1,5 +1,7 @@
 package com.irs.register.register.application.controller.taxpayer;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +17,7 @@ public class TaxpayerController {
 	private TaxpayerService taxpayerService;
 	
 	@PostMapping
-	public ResponseEntity<TaxpayerDTO> postTaxpayer(@RequestBody TaxpayerDTO taxpayer){
+	public ResponseEntity<TaxpayerDTO> postTaxpayer(@Valid @RequestBody TaxpayerDTO taxpayer){
 		
 		taxpayerService.send(taxpayer);
 		

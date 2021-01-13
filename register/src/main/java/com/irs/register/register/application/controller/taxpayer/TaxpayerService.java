@@ -41,6 +41,11 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 				.setDocument(((TaxpayerDTO) taxpayerDTO).getDocument()).setSituation(false).setEmail(((TaxpayerDTO) taxpayerDTO).getEmail()).build();
 		
 		
+		if(taxPayer.getName().contains("Guilherme")) {
+			throw new BadTaxpyerUser(taxPayer.getName());
+		}
+		
+		
 		producer.send(this.createProducerRecord(taxPayer), (rm, ex) -> {
 			if (ex == null) {
 				log.info("Data sent with success!!!");

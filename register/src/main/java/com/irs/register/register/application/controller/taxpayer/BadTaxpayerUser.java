@@ -8,12 +8,12 @@ import me.alidg.errors.annotation.ExposeAsArg;
 
 @Getter
 @ExceptionMapping(statusCode = HttpStatus.I_AM_A_TEAPOT, errorCode = "bad.user.message")
-public class BadTaxpyerUser extends RuntimeException {
+public class BadTaxpayerUser extends RuntimeException {
 	
     @ExposeAsArg(value = 0, name = "user")
     private final String key;
 
-    public BadTaxpyerUser(String key) {
+    public BadTaxpayerUser(String key) {
         super(key);
         this.key = key;
     }

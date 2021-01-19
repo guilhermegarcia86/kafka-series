@@ -42,7 +42,7 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 		
 		
 		if(taxPayer.getName().contains("Guilherme")) {
-			throw new BadTaxpyerUser(taxPayer.getName());
+			throw new BadTaxpayerUser(taxPayer.getName());
 		}
 		
 		
@@ -55,7 +55,6 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 		});
 
 		producer.flush();
-		//producer.close();
 
 	}
 

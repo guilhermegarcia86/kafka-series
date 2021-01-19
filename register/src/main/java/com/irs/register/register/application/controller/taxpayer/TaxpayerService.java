@@ -38,7 +38,7 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 		
 
 		TaxPayer taxPayer = TaxPayer.newBuilder().setName(((TaxpayerDTO) taxpayerDTO).getName())
-				.setDocument(((TaxpayerDTO) taxpayerDTO).getDocument()).setSituation(false).build();
+				.setDocument(((TaxpayerDTO) taxpayerDTO).getDocument()).setSituation(false).setEmail(((TaxpayerDTO) taxpayerDTO).getEmail()).build();
 		
 		
 		producer.send(this.createProducerRecord(taxPayer), (rm, ex) -> {
@@ -50,7 +50,7 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 		});
 
 		producer.flush();
-		producer.close();
+		//producer.close();
 
 	}
 

@@ -1,6 +1,6 @@
-# Register
+# Sender
 
-That app has the responsibility of send data from users.
+Application that consumes Kafka messages and send email to user.
 
 ## Build
 ```bash

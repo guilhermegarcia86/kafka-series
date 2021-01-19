@@ -1,0 +1,8 @@
+
+kafka:
+  bootstrapServers: 127.0.0.1:9092 
+  groupId: taxpayer-consumer
+  autoCommit: false
+  offsetReset: earliest
+  schemaRegistryUrl: "http://127.0.0.1:8081"
+  specificAvroReader: true

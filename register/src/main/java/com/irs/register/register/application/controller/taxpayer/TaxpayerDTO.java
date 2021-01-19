@@ -10,6 +10,8 @@ public class TaxpayerDTO implements CommonDTO{
 	private String name;
 	
 	private String document;
+	
+	private String email;
 
 	@Override
 	public String getType() {

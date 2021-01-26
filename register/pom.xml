@@ -93,14 +93,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka-streams</artifactId>
-			<!-- <version>${kafka.version}</version> -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
+			<groupId>me.alidg</groupId>
+			<artifactId>errors-spring-boot-starter</artifactId>
+			<version>1.4.0</version>
 		</dependency>
 
 		<dependency>
@@ -108,7 +108,7 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<!-- Flyway -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>

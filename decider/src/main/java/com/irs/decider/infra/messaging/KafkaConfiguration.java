@@ -1,39 +1,56 @@
 package com.irs.decider.infra.messaging;
 
+import static io.confluent.kafka.serializers.AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG;
+import static io.confluent.kafka.serializers.KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG;
+import static org.apache.kafka.clients.admin.AdminClientConfig.CLIENT_ID_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.AUTO_OFFSET_RESET_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.clients.consumer.ConsumerConfig.GROUP_ID_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.PROCESSING_GUARANTEE_CONFIG;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.irs.register.avro.taxpayer.TaxPayer;
-
-import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
-
 @Configuration
-public class KafkaConfiguration implements MessageConfiguration<TaxPayer> {
+public class KafkaConfiguration implements MessageConfiguration {
 	
 	@Autowired
 	private KafkaProperties kafkaProperties;
 
-	@Bean(name = "taxpayerStream")
 	@Override
-	public KafkaConsumer<String, TaxPayer> configureConsumer() {
+	public Properties configureProperties() {
 		
-		Properties props = new Properties();
+		Properties properties = new Properties();
 		
-		props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
-		props.put(StreamsConfig.APPLICATION_ID_CONFIG, kafkaProperties.getApplicationId());
-		props.put(StreamsConfig.PROCESSING_GUARANTEE_CONFIG, kafkaProperties.getProcessingGuaranteeConfig());
-		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaProperties.getOffsetReset());
-		props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, kafkaProperties.getDefaultKeySerde());
-		props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, kafkaProperties.getDefaultValueSerde());
-		props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, kafkaProperties.getSchemaRegistryUrl());
-		
-		return new KafkaConsumer<String, TaxPayer>(props);
+        properties.put(APPLICATION_ID_CONFIG, kafkaProperties.getApplicationId());
+        properties.put(GROUP_ID_CONFIG, kafkaProperties.getGroupId());
+        properties.put(BOOTSTRAP_SERVERS_CONFIG, kafkaProperties.getBootstrapServers());
+
+        properties.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, kafkaProperties.getDefaultKeySerde());
+
+		properties.put(PROCESSING_GUARANTEE_CONFIG, kafkaProperties.getProcessingGuaranteeConfig());
+		properties.put(AUTO_OFFSET_RESET_CONFIG, kafkaProperties.getOffsetReset());
+        properties.put(DEFAULT_TIMESTAMP_EXTRACTOR_CLASS_CONFIG, kafkaProperties.getTimeStampExtarctor());
+
+        try {
+            properties.put(CLIENT_ID_CONFIG, InetAddress.getLocalHost().getHostName() + kafkaProperties.getClientId());
+        } catch (UnknownHostException e) {
+        	System.out.println("DEU RUIM AQUI");
+        }
+        
+        properties.put(SCHEMA_REGISTRY_URL_CONFIG, kafkaProperties.getSchemaRegistryUrl());
+        properties.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, kafkaProperties.getDefaultValueSerde());
+        properties.put(SPECIFIC_AVRO_READER_CONFIG, kafkaProperties.isSpecficAvroReader());
+				
+		return properties;
 	}
 
 }

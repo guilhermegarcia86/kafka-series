@@ -17,7 +17,7 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.irs.decider.infra.messaging.KafkaConfiguration;
+import com.irs.decider.infra.messaging.MessageConfiguration;
 import com.irs.decider.infra.messaging.MessageStream;
 import com.irs.register.avro.taxpayer.TaxPayer;
 
@@ -27,7 +27,7 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 public class TaxpayerStream implements MessageStream {
 	
 	@Autowired
-	private KafkaConfiguration kakfaConfiguration;
+	private MessageConfiguration kakfaConfiguration;
 	
 	@Autowired
 	private TaxpayerProcessorSituationTrue processorTrue;
@@ -48,13 +48,13 @@ public class TaxpayerStream implements MessageStream {
 		
 		StreamsBuilder streamsBuilder = new StreamsBuilder();
 		
-		Serde<TaxPayer> valueAvroSerde = new SpecificAvroSerde<>();
+		Serde<TaxPayer> taxpayerAvroSerde = new SpecificAvroSerde<>();
 		
-		valueAvroSerde.configure(getSerdeProperties(), false);
+		taxpayerAvroSerde.configure(getSerdeProperties(), false);
 		
-		KStream<String, TaxPayer> stream2 = streamsBuilder.stream(getTopic(), Consumed.with(Serdes.String(), valueAvroSerde));
+		KStream<String, TaxPayer> stream = streamsBuilder.stream(getTopic(), Consumed.with(Serdes.String(), taxpayerAvroSerde));
 		
-		KStream<String, TaxPayer>[] branch = stream2.branch(
+		KStream<String, TaxPayer>[] branch = stream.branch(
 				(id, tax) -> tax.getSituation() == false,
 				(id, tax) -> tax.getSituation() == true
 				);

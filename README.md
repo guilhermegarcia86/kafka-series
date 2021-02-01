@@ -9,4 +9,4 @@ Artigos:
 
 Diagrama:
 
-![Diagrama](images/diagrama.png)
+![Diagrama](images/diagrama-kafka.png)

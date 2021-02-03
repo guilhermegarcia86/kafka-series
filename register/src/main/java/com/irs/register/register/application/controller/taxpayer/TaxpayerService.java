@@ -1,6 +1,8 @@
 package com.irs.register.register.application.controller.taxpayer;
 
 
+import java.util.Random;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +38,10 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 	@Override
 	public void send(CommonDTO taxpayerDTO) {
 		
+		Random rd = new Random();
 
 		TaxPayer taxPayer = TaxPayer.newBuilder().setName(((TaxpayerDTO) taxpayerDTO).getName())
-				.setDocument(((TaxpayerDTO) taxpayerDTO).getDocument()).setSituation(false).setEmail(((TaxpayerDTO) taxpayerDTO).getEmail()).build();
+				.setDocument(((TaxpayerDTO) taxpayerDTO).getDocument()).setSituation(rd.nextBoolean()).setEmail(((TaxpayerDTO) taxpayerDTO).getEmail()).build();
 		
 		
 		if(taxPayer.getName().contains("Guilherme")) {

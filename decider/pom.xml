@@ -6,14 +6,14 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.4.0</version>
+		<version>2.4.2</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.irs.register</groupId>
-	<artifactId>register</artifactId>
+	<groupId>com.irs</groupId>
+	<artifactId>decider</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>register</name>
-	<description>Register Service</description>
+	<name>decider</name>
+	<description>App who decides who will go to he fine mesh</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -22,52 +22,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.22</version>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.avro/avro -->
@@ -75,6 +36,12 @@
 			<groupId>org.apache.avro</groupId>
 			<artifactId>avro</artifactId>
 			<version>1.10.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams -->
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
 		</dependency>
 
 		<!--dependencies needed for the kafka part -->
@@ -92,14 +59,36 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-streams-avro-serde</artifactId>
+			<version>5.3.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
-			<groupId>me.alidg</groupId>
-			<artifactId>errors-spring-boot-starter</artifactId>
-			<version>1.4.0</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.22</version>
+		</dependency>
+
+		<!-- Flyway -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
 		</dependency>
 
 		<dependency>
@@ -108,20 +97,15 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Flyway -->
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

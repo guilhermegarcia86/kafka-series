@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.clients.consumer.Consumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,23 @@ import org.springframework.stereotype.Service;
 import com.irs.register.avro.taxpayer.TaxPayer;
 import com.irs.sender.domain.Person;
 import com.irs.sender.infra.mail.Email;
-import com.irs.sender.infra.messaging.Consumer;
+import com.irs.sender.infra.messaging.MessageConsumer;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class KafkaConsumerService implements Consumer<TaxPayer> {
+public class KafkaConsumerService implements MessageConsumer<TaxPayer> {
+
+	private final Consumer<String, TaxPayer> kafkaConsumer;
+
+	private final Email email;
 
 	@Autowired
-	@Qualifier("taxpayerConsumer")
-	private KafkaConsumer<String, TaxPayer> kafkaConsumer;
-
-	@Autowired
-	private Email email;
+	public KafkaConsumerService(@Qualifier("taxpayerConsumer") Consumer<String, TaxPayer> kafkaConsumer, Email email) {
+		this.kafkaConsumer = kafkaConsumer;
+		this.email = email;
+	}
 
 	@Override
 	public String topic() {
@@ -37,13 +40,15 @@ public class KafkaConsumerService implements Consumer<TaxPayer> {
 	@Override
 	public void receive() {
 
-		kafkaConsumer.subscribe(Collections.singleton(this.topic()));
+		Consumer<String, TaxPayer> consumer = kafkaConsumer;
+
+		consumer.subscribe(Collections.singleton(this.topic()));
 
 		while (true) {
 
 			try {
 
-				kafkaConsumer.poll(Duration.ofMillis(1000)).forEach(record -> {
+				consumer.poll(Duration.ofMillis(1000)).forEach(record -> {
 
 					log.info("Recebendo TaxPayer");
 
@@ -55,14 +60,19 @@ public class KafkaConsumerService implements Consumer<TaxPayer> {
 
 				});
 
-				kafkaConsumer.commitSync();
+				consumer.commitSync();
 
 			} catch (Exception ex) {
 				log.error("Erro ao processar mensagem", ex);
+				break;
 			}
 
 		}
 
+	}
+
+	public void close() {
+		kafkaConsumer.close();
 	}
 
 }

@@ -8,6 +8,4 @@ public interface MessageConsumer<T extends SpecificRecordBase> {
 	
 	void receive();
 	
-	void close();
-	
 }

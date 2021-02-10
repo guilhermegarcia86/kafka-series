@@ -8,6 +8,9 @@ import javax.annotation.PostConstruct;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Service;
 
 import com.irs.register.avro.taxpayer.TaxPayer;
@@ -21,58 +24,60 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class KafkaConsumerService implements MessageConsumer<TaxPayer> {
 
-	private final Consumer<String, TaxPayer> kafkaConsumer;
+    @Value("${cronTimer.process}")
+    private String process;
 
-	private final Email email;
+    private final Consumer<String, TaxPayer> kafkaConsumer;
 
-	@Autowired
-	public KafkaConsumerService(@Qualifier("taxpayerConsumer") Consumer<String, TaxPayer> kafkaConsumer, Email email) {
-		this.kafkaConsumer = kafkaConsumer;
-		this.email = email;
-	}
+    private final Email email;
 
-	@Override
-	public String topic() {
-		return "taxpayer-avro";
-	}
+    private final ThreadPoolTaskScheduler taskScheduler;
 
-	@PostConstruct
-	@Override
-	public void receive() {
+    @Autowired
+    public KafkaConsumerService(@Qualifier("taxpayerConsumer") Consumer<String, TaxPayer> kafkaConsumer, Email email, ThreadPoolTaskScheduler taskScheduler) {
+        this.kafkaConsumer = kafkaConsumer;
+        this.email = email;
+        this.taskScheduler = taskScheduler;
+    }
 
-		Consumer<String, TaxPayer> consumer = kafkaConsumer;
+    @PostConstruct
+    public void init() {
+        taskScheduler.schedule(() -> {
+            this.receive();
+        }, new CronTrigger(process));
+    }
 
-		consumer.subscribe(Collections.singleton(this.topic()));
+    @Override
+    public String topic() {
+        return "taxpayer-avro";
+    }
 
-		while (true) {
+    @Override
+    public void receive() {
 
-			try {
+        Consumer<String, TaxPayer> consumer = kafkaConsumer;
 
-				consumer.poll(Duration.ofMillis(1000)).forEach(record -> {
+        consumer.subscribe(Collections.singleton(this.topic()));
 
-					log.info("Recebendo TaxPayer");
+        try {
 
-					TaxPayer taxpayer = record.value();
+            consumer.poll(Duration.ofMillis(1000)).forEach(record -> {
 
-					Person person = Person.builder().email(taxpayer.getEmail()).name(taxpayer.getName()).build();
+                log.info("Recebendo TaxPayer");
 
-					email.sendMessage(person);
+                TaxPayer taxpayer = record.value();
 
-				});
+                Person person = Person.builder().email(taxpayer.getEmail()).name(taxpayer.getName()).build();
 
-				consumer.commitSync();
+                email.sendMessage(person);
 
-			} catch (Exception ex) {
-				log.error("Erro ao processar mensagem", ex);
-				break;
-			}
+            });
 
-		}
+            consumer.commitSync();
 
-	}
+        } catch (Exception ex) {
+            log.error("Erro ao processar mensagem", ex);
+        }
 
-	public void close() {
-		kafkaConsumer.close();
-	}
-
+    }
 }

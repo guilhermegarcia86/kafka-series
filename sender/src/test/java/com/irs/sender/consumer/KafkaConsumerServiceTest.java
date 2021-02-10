@@ -23,8 +23,7 @@ public class KafkaConsumerServiceTest {
 	
 	private Email email;
 
-	@Autowired
-	private ThreadPoolTaskScheduler taskScheduler;
+	private ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
 	
 	private static final String TOPIC = "taxpayer-avro";
 

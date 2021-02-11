@@ -33,7 +33,7 @@ public class TaxpayerService implements MessagingPort<TaxPayer> {
 	@Override
 	public ProducerRecord<String, TaxPayer> createProducerRecord(TaxPayer taxPayer) {
 
-		return new ProducerRecord<String, TaxPayer>(this.topic(), taxPayer);
+		return new ProducerRecord<>(this.topic(), taxPayer);
 		
 	}
 

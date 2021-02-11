@@ -35,20 +35,20 @@ public class KafkaConsumerServiceTest {
 		
 		consumer.schedulePollTask(() -> {
 			consumer.rebalance(Collections.singletonList(new TopicPartition(TOPIC, 0)));
-			consumer.addRecord(new ConsumerRecord<String, TaxPayer>("taxpayer-avro", 0, 0l, "key", this.prepareTaxpayerMock()));
+			consumer.addRecord(new ConsumerRecord<String, TaxPayer>(TOPIC, 0, 0l, "key", this.prepareTaxpayerMock()));
 		});
 		
 		HashMap<TopicPartition, Long> beginningOffsets = new HashMap<>();
 		beginningOffsets.put(new TopicPartition(TOPIC, 0), 0l);
 		consumer.updateBeginningOffsets(beginningOffsets);
 		
-		consumer.subscribe(Collections.singleton("taxpayer-avro"));
+		consumer.subscribe(Collections.singleton(TOPIC));
 		service = new KafkaConsumerService(consumer, email, taskScheduler);
 		
 	}
 	
 	void prepareEmailMock() {
-		email = person -> System.out.println("Mandando mensagem para pessoa :: " + person);
+		email = person -> System.out.println("Mandando email teste :: " + person);
 	}
 	
 	

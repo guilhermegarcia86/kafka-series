@@ -6,7 +6,7 @@ public interface MessageStream {
 	
 	String getTopic();
 	
-	StreamsBuilder creataStream();
+	StreamsBuilder createStream();
 	
 	void start();
 	

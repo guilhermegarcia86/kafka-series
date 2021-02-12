@@ -13,9 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class TaxpayerProcessorSituationTrue extends AbstractProcessor<String, TaxPayer>{
-	
+
+	private final TaxpayerPort repository;
+
 	@Autowired
-	private TaxpayerPort repository;
+	public TaxpayerProcessorSituationTrue(TaxpayerPort repository) {
+		this.repository = repository;
+	}
 
 	@Override
 	public void process(String key, TaxPayer value) {

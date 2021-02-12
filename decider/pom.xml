@@ -102,6 +102,14 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams-test-utils</artifactId>
+			<version>6.1.0-ccs</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -25,17 +25,21 @@ import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
 
 @Component
 public class TaxpayerStream implements MessageStream {
+
+	private final MessageConfiguration kafkaConfiguration;
+
+	private final TaxpayerProcessorSituationTrue processorTrue;
 	
-	@Autowired
-	private MessageConfiguration kakfaConfiguration;
-	
-	@Autowired
-	private TaxpayerProcessorSituationTrue processorTrue;
-	
-	@Autowired
-	private TaxpayerProcessorSituationFalse processorFalse;
+	private final TaxpayerProcessorSituationFalse processorFalse;
 
 	private KafkaStreams kafkaStreams;
+
+	@Autowired
+	public TaxpayerStream(MessageConfiguration kafkaConfiguration, TaxpayerProcessorSituationTrue processorTrue, TaxpayerProcessorSituationFalse processorFalse) {
+		this.kafkaConfiguration = kafkaConfiguration;
+		this.processorTrue = processorTrue;
+		this.processorFalse = processorFalse;
+	}
 
 	@Override
 	public String getTopic() {
@@ -44,7 +48,7 @@ public class TaxpayerStream implements MessageStream {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public StreamsBuilder creataStream() {
+	public StreamsBuilder createStream() {
 		
 		StreamsBuilder streamsBuilder = new StreamsBuilder();
 		
@@ -69,9 +73,9 @@ public class TaxpayerStream implements MessageStream {
 	@Override
 	public void start() {
 		
-		StreamsBuilder streamsBuilder = this.creataStream();
+		StreamsBuilder streamsBuilder = this.createStream();
 		
-		kafkaStreams = new KafkaStreams(streamsBuilder.build(), kakfaConfiguration.configureProperties());
+		kafkaStreams = new KafkaStreams(streamsBuilder.build(), kafkaConfiguration.configureProperties());
 		kafkaStreams.setUncaughtExceptionHandler(this.getUncaughtExceptionHandler());
         kafkaStreams.start();
 		
@@ -84,7 +88,7 @@ public class TaxpayerStream implements MessageStream {
 	}
 	
     private Map<String, String> getSerdeProperties() {
-        return Collections.singletonMap(SCHEMA_REGISTRY_URL_CONFIG, (String)kakfaConfiguration.configureProperties().get(SCHEMA_REGISTRY_URL_CONFIG));
+        return Collections.singletonMap(SCHEMA_REGISTRY_URL_CONFIG, (String) kafkaConfiguration.configureProperties().get(SCHEMA_REGISTRY_URL_CONFIG));
     }
     
     private UncaughtExceptionHandler getUncaughtExceptionHandler() {

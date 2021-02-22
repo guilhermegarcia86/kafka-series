@@ -1,18 +1,42 @@
-version: '2'
+version: '3'
 
 services:
-  # this is our kafka cluster.
+  
+  mysql:
+    image: mysql:8.0.17
+    cap_add: 
+      - SYS_NICE
+    environment: 
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_DATABASE: register
+    networks: 
+      - kafka-network
+    ports: 
+      - "3306:3306"
+    volumes: 
+      - ./data/decider.sql:/docker-entrypoint-initdb.d/decider.sql
+
   kafka-cluster:
-    image: landoop/fast-data-dev:latest
+    image: landoop/kafka-lenses-dev
     environment:
-      ADV_HOST: 127.0.0.1         # Change to 192.168.99.100 if using Docker Toolbox
-      RUNTESTS: 0                 # Disable Running tests so the cluster starts faster
-      # FORWARDLOGS: 0              # Disable running 5 file source connectors that bring application logs into Kafka topics
-      # SAMPLEDATA: 0               # Do not create sea_vessel_position_reports, nyc_yellow_taxi_trip_data, reddit_posts topics with sample Avro records.
+      EULA: "https://licenses.lenses.io/download/lensesdl?id=27ff2a96-6f99-11eb-a86b-42010af01003" 
+      CONNECT_HEAP: 3G
+      ADV_HOST: 127.0.0.1
+      SAMPLEDATA: 0
+      RUNTESTS: 0
+    networks: 
+      - kafka-network
     ports:
-      - 2181:2181                 # Zookeeper
-      - 3030:3030                 # Landoop UI
-      - 8081-8083:8081-8083       # REST Proxy, Schema Registry, Kafka Connect ports
-      - 9581-9585:9581-9585       # JMX Ports
-      - 9092:9092                 # Kafka Broker
-    mem_reservation: 512M
+      - "2181:2181"                 # Zookeeper
+      - "3030:3030"                 # Landoop UI
+      - "8081-8083:8081-8083"       # REST Proxy, Schema Registry, Kafka Connect ports
+      - "9581-9585:9581-9585"       # JMX Ports
+      - "9092:9092"                 # Kafka Broker
+    depends_on: 
+      - mysql
+
+networks:
+  kafka-network: 
+    driver: bridge

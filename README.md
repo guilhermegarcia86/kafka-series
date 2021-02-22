@@ -10,4 +10,4 @@ Artigos:
 
 Diagrama:
 
-![Diagrama](images/diagrama-kafka.png)
+![Diagrama](images/diagrama-kafka-debezium.png)

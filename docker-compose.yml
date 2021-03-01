@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    depends_on: 
+    - kafka-cluster    
+    ports:
+      - 27017:27017
+    networks: 
+      - kafka-network
   
   mysql:
     image: mysql:8.0.17
@@ -10,7 +20,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: user
       MYSQL_PASSWORD: user
-      MYSQL_DATABASE: register
+      MYSQL_DATABASE: registern
     networks: 
       - kafka-network
     ports: 
